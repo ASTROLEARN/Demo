@@ -124,6 +124,10 @@ img{max-width:100%;display:block}
 .vendor-card .meta{padding:12px}
 .tag{display:inline-block;padding:4px 8px;border-radius:999px;background:#fff1f0;color:#9b3b33;font-size:12px;margin-right:6px}
 .map{border:0;width:100%;height:320px;border-radius:14px}
+/* Section dividers and extra spacing */
+.section{padding:60px 0}
+.section-divider{height:1px;background:linear-gradient(90deg, rgba(var(--accent-rgb),0.06), rgba(255,255,255,0));margin:28px 0;border-radius:4px}
+
 /* Team card styles (symmetry + consistent images) */
 .team-grid{align-items:stretch}
 .team-card{transition:transform .28s ease,box-shadow .28s ease}
@@ -131,13 +135,23 @@ img{max-width:100%;display:block}
 .team-card .card-body{padding:14px 18px;text-align:left}
 .team-card strong{display:block;font-size:16px;margin-bottom:6px;color:var(--text)}
 .team-card .section-sub{color:var(--muted);margin:0;font-size:14px}
-.team-card:hover{transform:translateY(-8px);box-shadow:0 26px 72px rgba(15,23,42,.12)}
+.team-card:hover{transform:translateY(-8px);box-shadow:0 26px 72px rgba(var(--accent-rgb),0.12)}
 .team-card:hover img{transform:scale(1.04);filter:brightness(0.98)}
 @media (max-width: 640px){
   .team-card img{height:200px}
 }
 
-/* Dark theme overrides */
+/* Testimonials tweaks */
+.carousel{position:relative;overflow:visible;border-radius:14px;background:var(--section-bg);box-shadow:0 8px 32px rgba(var(--accent-rgb),0.06);border:1px solid rgba(255,255,255,0.03)}
+.carousel-track{display:flex;transition:transform .28s cubic-bezier(.2,.9,.2,1)}
+.testimonial{min-width:100%;padding:28px;border-radius:12px;background:var(--section-bg);box-shadow:0 6px 18px rgba(var(--accent-rgb),0.04);margin:0 12px}
+.testimonial p{color:var(--muted)}
+.testimonial .badge{color:var(--accent);background:transparent}
+/* arrows outside */
+.carousel-nav{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);pointer-events:none}
+.carousel-nav .carousel-btn{pointer-events:auto;position:absolute;top:50%;transform:translateY(-50%);background:transparent;border:0;color:var(--muted);width:42px;height:42px}
+.carousel-nav .carousel-btn[data-prev]{left:-56px}
+.carousel-nav .carousel-btn[data-next]{right:-56px}
 :root[data-theme='dark'],[data-theme='dark']{
   --brand:#FCA28A;
   --brand-dark:#E86B53;
