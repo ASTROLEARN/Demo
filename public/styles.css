@@ -208,6 +208,17 @@ img{max-width:100%;display:block}
   .vendor-grid{grid-template-columns:repeat(2,1fr)}
   .kpis{grid-template-columns:repeat(2,1fr)}
 }
+@media (max-width: 768px){
+  .vendor-grid{grid-template-columns:repeat(2,1fr);gap:16px}
+}
+@media (max-width: 640px){
+  .nav-links{display:none}
+  .hero-copy h1{font-size:30px}
+  .categories{grid-template-columns:repeat(2,1fr)}
+  .cards{grid-template-columns:1fr}
+  .vendor-grid{grid-template-columns:1fr}
+  .grid-3,.grid-4{grid-template-columns:1fr}
+}
 @media (max-width: 640px){
   .nav-links{display:none}
   .hero-copy h1{font-size:30px}
