@@ -81,7 +81,7 @@ img{max-width:100%;display:block}
 /* Section layering */
 .section{padding:60px 0}
 .section .container{padding:18px}
-.section-title{font-size:26px;margin:0 0 10px;font-weight:800;font-family:'Dancing Script',cursive;background:linear-gradient(90deg,#F97366,#D85A47);-webkit-background-clip:text;background-clip:text;color:transparent}
+.section-title{font-size:26px;margin:0 0 10px;font-weight:800;font-family:'Dancing Script',cursive;background:linear-gradient(90deg,#F97366,#D85A47);-webkit-background-clip:text;background-clip:text;color:var(--heading-color)}
 .section-sub{color:var(--muted);margin:0 0 22px}
 .categories{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:12px;border-radius:14px;background:var(--section-bg)}
 /* Adjust categories for better dark contrast */
