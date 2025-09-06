@@ -104,7 +104,7 @@ img{max-width:100%;display:block}
 .social{display:flex;gap:10px}
 .social a{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:8px;color:var(--text);transition:transform .26s ease,background .26s ease,color .26s ease}
 .social a:hover{transform:translateY(-4px);background:linear-gradient(90deg,var(--accent),#ffd0c8);color:#fff}
-.badge{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(249,115,102,.12);color:var(--brand);font-size:12px}
+.badge{display:inline-block;padding:4px 10px;border-radius:999px;background:transparent;color:var(--accent);font-size:12px}
 .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
