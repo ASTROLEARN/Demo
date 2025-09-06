@@ -36,17 +36,36 @@ document.addEventListener('DOMContentLoaded',()=>{
   const links=document.querySelector('.nav-links');
   if(trigger&&links){trigger.addEventListener('click',()=>links.style.display=links.style.display==='flex'?'':'flex');}
 
-  // Carousel
+  // Carousel with auto-slide + swipe
   document.querySelectorAll('[data-carousel]').forEach(car=>{
     const track=car.querySelector('[data-track]');
     const slides=[...car.querySelectorAll('.testimonial')];
-    let idx=0;const setActive=i=>{
-      idx=(i+slides.length)%slides.length;track.style.transform=`translateX(-${idx*100}%)`;
+    let idx=0; let timer=null;
+    const setActive=i=>{
+      idx=(i+slides.length)%slides.length;track.style.transition='transform .28s cubic-bezier(.2,.9,.2,1)';
+      track.style.transform=`translateX(-${idx*100}%)`;
       slides.forEach((s,sn)=>s.classList.toggle('active', sn===idx));
     };
-    car.querySelector('[data-prev]')?.addEventListener('click',()=>setActive(idx-1));
-    car.querySelector('[data-next]')?.addEventListener('click',()=>setActive(idx+1));
-    setInterval(()=>setActive(idx+1),6000);
+    const prevBtn=car.querySelector('[data-prev]');
+    const nextBtn=car.querySelector('[data-next]');
+    prevBtn?.addEventListener('click',()=>{setActive(idx-1);resetTimer();});
+    nextBtn?.addEventListener('click',()=>{setActive(idx+1);resetTimer();});
+
+    // Auto slide
+    const startTimer=()=>{ timer = setInterval(()=>setActive(idx+1),6000); };
+    const resetTimer=()=>{ if(timer) clearInterval(timer); startTimer(); };
+    startTimer();
+
+    // Swipe support
+    let startX=0; let deltaX=0; let isTouch=false;
+    track.addEventListener('touchstart',(e)=>{if(e.touches.length!==1) return; isTouch=true; startX=e.touches[0].clientX; track.style.transition='none'; if(timer) clearInterval(timer);});
+    track.addEventListener('touchmove',(e)=>{ if(!isTouch) return; deltaX = e.touches[0].clientX - startX; track.style.transform = `translateX(${ -idx*100 + (deltaX / car.clientWidth)*100 }%)`; });
+    track.addEventListener('touchend',(e)=>{ if(!isTouch) return; isTouch=false; track.style.transition='transform .28s cubic-bezier(.2,.9,.2,1)'; if(Math.abs(deltaX) > (car.clientWidth*0.18)) { if(deltaX>0) setActive(idx-1); else setActive(idx+1); } else setActive(idx); deltaX=0; resetTimer(); });
+
+    // Pause on hover (desktop)
+    car.addEventListener('mouseenter',()=>{ if(timer) clearInterval(timer); });
+    car.addEventListener('mouseleave',()=>{ resetTimer(); });
+
     setActive(0);
   });
 
