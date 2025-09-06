@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 const server = http.createServer((req, res) => {
   const safePath = req.url.split('?')[0].replace(/\/+/, '/');
@@ -34,10 +34,13 @@ const server = http.createServer((req, res) => {
 
     res.statusCode = 200;
     res.setHeader('Content-Type', contentType);
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     stream.pipe(res);
   });
 });
 
-server.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+server.listen(port, '0.0.0.0', () => {
+  console.log(`Server listening on 0.0.0.0:${port}`);
 });
