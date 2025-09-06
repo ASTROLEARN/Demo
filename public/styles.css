@@ -90,6 +90,19 @@ img{max-width:100%;display:block}
 .vendor-card .meta{padding:12px}
 .tag{display:inline-block;padding:4px 8px;border-radius:999px;background:#fff1f0;color:#9b3b33;font-size:12px;margin-right:6px}
 .map{border:0;width:100%;height:320px;border-radius:14px}
+/* Team card styles (symmetry + consistent images) */
+.team-grid{align-items:stretch}
+.team-card{transition:transform .28s ease,box-shadow .28s ease}
+.team-card img{width:100%;height:280px;object-fit:cover;display:block;border-radius:12px 12px 0 0;transition:transform .28s ease,filter .28s ease}
+.team-card .card-body{padding:14px 18px;text-align:left}
+.team-card strong{display:block;font-size:16px;margin-bottom:6px;color:var(--text)}
+.team-card .section-sub{color:var(--muted);margin:0;font-size:14px}
+.team-card:hover{transform:translateY(-8px);box-shadow:0 26px 72px rgba(15,23,42,.12)}
+.team-card:hover img{transform:scale(1.04);filter:brightness(0.98)}
+@media (max-width: 640px){
+  .team-card img{height:200px}
+}
+
 /* Dark theme overrides */
 :root[data-theme='dark'],[data-theme='dark']{
   --brand:#FCA28A;
