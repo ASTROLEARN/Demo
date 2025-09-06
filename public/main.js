@@ -1,4 +1,36 @@
 document.addEventListener('DOMContentLoaded',()=>{
+  // Insert theme toggle into navbar
+  const navContainers=document.querySelectorAll('.navbar');
+  navContainers.forEach(nav=>{
+    if(nav.querySelector('.theme-toggle')) return;
+    const btn=document.createElement('button');
+    btn.className='theme-toggle';
+    btn.type='button';
+    btn.title='Toggle color mode';
+    btn.innerHTML='☀️';
+    btn.addEventListener('click',toggleTheme);
+    // place near end of navbar
+    nav.appendChild(btn);
+  });
+
+  // Theme: initialize from localStorage or prefers-color-scheme
+  function applyTheme(theme){
+    document.documentElement.setAttribute('data-theme',theme);
+    const toggles=document.querySelectorAll('.theme-toggle');
+    toggles.forEach(t=>t.innerHTML = theme==='dark' ? '🌙' : '☀️');
+  }
+  function toggleTheme(){
+    const current=document.documentElement.getAttribute('data-theme')|| (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light');
+    const next = current==='dark' ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem('theme', next);
+  }
+  const stored=localStorage.getItem('theme');
+  if(stored) applyTheme(stored); else {
+    const prefers = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(prefers? 'dark':'light');
+  }
+
   // Mobile nav toggle (simple)
   const trigger=document.querySelector('[data-nav-toggle]');
   const links=document.querySelector('.nav-links');
@@ -8,10 +40,14 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('[data-carousel]').forEach(car=>{
     const track=car.querySelector('[data-track]');
     const slides=[...car.querySelectorAll('.testimonial')];
-    let idx=0;const go=i=>{idx=(i+slides.length)%slides.length;track.style.transform=`translateX(-${idx*100}%)`;};
-    car.querySelector('[data-prev]')?.addEventListener('click',()=>go(idx-1));
-    car.querySelector('[data-next]')?.addEventListener('click',()=>go(idx+1));
-    setInterval(()=>go(idx+1),6000);
+    let idx=0;const setActive=i=>{
+      idx=(i+slides.length)%slides.length;track.style.transform=`translateX(-${idx*100}%)`;
+      slides.forEach((s,sn)=>s.classList.toggle('active', sn===idx));
+    };
+    car.querySelector('[data-prev]')?.addEventListener('click',()=>setActive(idx-1));
+    car.querySelector('[data-next]')?.addEventListener('click',()=>setActive(idx+1));
+    setInterval(()=>setActive(idx+1),6000);
+    setActive(0);
   });
 
   // Vendor filters
