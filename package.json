@@ -1,0 +1,11 @@
+{
+  "name": "astrolearn-app",
+  "version": "1.0.0",
+  "description": "Minimal app to run in the dev environment",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "ASTROLEARN",
+  "license": "MIT"
+}
