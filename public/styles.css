@@ -82,11 +82,12 @@ img{max-width:100%;display:block}
 .section-title{font-size:26px;margin:0 0 10px;font-weight:800;font-family:'Dancing Script',cursive;background:linear-gradient(90deg,#F97366,#D85A47);-webkit-background-clip:text;background-clip:text;color:transparent}
 .section-sub{color:var(--muted);margin:0 0 22px}
 .categories{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:12px;border-radius:14px;background:var(--section-bg)}
-/* Glassmorphism categories */
-.category{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px;border-radius:14px;background:var(--glass-bg);backdrop-filter:blur(8px);border:1px solid var(--glass-border);box-shadow:0 6px 18px rgba(15,23,42,.04);transition:transform .26s ease,box-shadow .26s ease,border-color .26s ease}
-.category:hover{transform:translateY(-8px);box-shadow:0 26px 72px rgba(15,23,42,.12);border-color:rgba(249,115,102,.22)}
-.category svg{width:28px;height:28px;color:var(--brand);transition:transform .26s ease,color .26s ease}
-.category:hover svg{transform:translateY(-6px) scale(1.06);color:var(--accent)}
+/* Adjust categories for better dark contrast */
+.category{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px;border-radius:14px;background:var(--section-bg);border:1px solid rgba(255,255,255,0.04);box-shadow:0 6px 18px rgba(var(--accent-rgb),0.04);transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}
+.category svg{width:28px;height:28px;color:var(--accent);transition:transform .26s ease,color .26s ease}
+.category span{color:#fff}
+.category:hover{transform:translateY(-8px);box-shadow:0 18px 48px rgba(var(--accent-rgb),0.12);border-color:rgba(var(--accent-rgb),0.22)}
+.category:hover svg{transform:scale(1.08)}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .card{background:var(--surface);border-radius:14px;box-shadow:0 10px 30px rgba(2,6,23,.04);border:1px solid rgba(15,23,42,.04);overflow:hidden}
 .card-body{padding:18px}
