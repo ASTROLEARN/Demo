@@ -1,10 +1,19 @@
-const Event = require('../models/Event');
+const supabase = require('../config/supabase');
 
 const getEvents = async (req, res) => {
   try {
-    const events = await Event.find({ createdBy: req.user._id })
-      .populate('createdBy', 'name email')
-      .sort({ date: 1 });
+    const { data: events, error } = await supabase
+      .from('events')
+      .select(`
+        *,
+        users!created_by(name, email)
+      `)
+      .eq('created_by', req.user.id)
+      .order('date', { ascending: true });
+    
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
     
     res.json({
       success: true,
@@ -18,12 +27,17 @@ const getEvents = async (req, res) => {
 
 const getEvent = async (req, res) => {
   try {
-    const event = await Event.findOne({ 
-      _id: req.params.id, 
-      createdBy: req.user._id 
-    }).populate('createdBy', 'name email');
+    const { data: event, error } = await supabase
+      .from('events')
+      .select(`
+        *,
+        users!created_by(name, email)
+      `)
+      .eq('id', req.params.id)
+      .eq('created_by', req.user.id)
+      .single();
     
-    if (!event) {
+    if (error || !event) {
       return res.status(404).json({ error: 'Event not found' });
     }
     
@@ -40,12 +54,21 @@ const createEvent = async (req, res) => {
   try {
     const eventData = {
       ...req.body,
-      createdBy: req.user._id
+      created_by: req.user.id
     };
     
-    const event = new Event(eventData);
-    await event.save();
-    await event.populate('createdBy', 'name email');
+    const { data: event, error } = await supabase
+      .from('events')
+      .insert([eventData])
+      .select(`
+        *,
+        users!created_by(name, email)
+      `)
+      .single();
+    
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
     
     res.status(201).json({
       success: true,
@@ -58,13 +81,18 @@ const createEvent = async (req, res) => {
 
 const updateEvent = async (req, res) => {
   try {
-    const event = await Event.findOneAndUpdate(
-      { _id: req.params.id, createdBy: req.user._id },
-      req.body,
-      { new: true, runValidators: true }
-    ).populate('createdBy', 'name email');
+    const { data: event, error } = await supabase
+      .from('events')
+      .update(req.body)
+      .eq('id', req.params.id)
+      .eq('created_by', req.user.id)
+      .select(`
+        *,
+        users!created_by(name, email)
+      `)
+      .single();
     
-    if (!event) {
+    if (error || !event) {
       return res.status(404).json({ error: 'Event not found' });
     }
     
@@ -79,12 +107,15 @@ const updateEvent = async (req, res) => {
 
 const deleteEvent = async (req, res) => {
   try {
-    const event = await Event.findOneAndDelete({ 
-      _id: req.params.id, 
-      createdBy: req.user._id 
-    });
+    const { data: event, error } = await supabase
+      .from('events')
+      .delete()
+      .eq('id', req.params.id)
+      .eq('created_by', req.user.id)
+      .select()
+      .single();
     
-    if (!event) {
+    if (error || !event) {
       return res.status(404).json({ error: 'Event not found' });
     }
     

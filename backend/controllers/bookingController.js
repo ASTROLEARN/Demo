@@ -1,4 +1,4 @@
-const Booking = require('../models/Booking');
+const supabase = require('../config/supabase');
 
 const getBookings = async (req, res) => {
   try {

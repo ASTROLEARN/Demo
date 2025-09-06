@@ -1,34 +1,35 @@
-const Vendor = require('../models/Vendor');
+const supabase = require('../config/supabase');
 
 const getVendors = async (req, res) => {
   try {
     const { category, availability, rating, search } = req.query;
-    let query = {};
+    let query = supabase.from('vendors').select('*');
     
     // Filter by category
     if (category) {
-      query.category = category.toLowerCase();
+      query = query.eq('category', category.toLowerCase());
     }
     
     // Filter by availability
     if (availability !== undefined) {
-      query.availability = availability === 'true';
+      query = query.eq('availability', availability === 'true');
     }
     
     // Filter by minimum rating
     if (rating) {
-      query.rating = { $gte: parseFloat(rating) };
+      query = query.gte('rating', parseFloat(rating));
     }
     
     // Search in name and description
     if (search) {
-      query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
-      ];
+      query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%`);
     }
     
-    const vendors = await Vendor.find(query).sort({ rating: -1, name: 1 });
+    const { data: vendors, error } = await query.order('rating', { ascending: false }).order('name');
+    
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
     
     res.json({
       success: true,
@@ -42,9 +43,13 @@ const getVendors = async (req, res) => {
 
 const getVendor = async (req, res) => {
   try {
-    const vendor = await Vendor.findById(req.params.id);
+    const { data: vendor, error } = await supabase
+      .from('vendors')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
     
-    if (!vendor) {
+    if (error || !vendor) {
       return res.status(404).json({ error: 'Vendor not found' });
     }
     
@@ -59,8 +64,15 @@ const getVendor = async (req, res) => {
 
 const createVendor = async (req, res) => {
   try {
-    const vendor = new Vendor(req.body);
-    await vendor.save();
+    const { data: vendor, error } = await supabase
+      .from('vendors')
+      .insert([req.body])
+      .select()
+      .single();
+    
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
     
     res.status(201).json({
       success: true,
@@ -73,13 +85,14 @@ const createVendor = async (req, res) => {
 
 const updateVendor = async (req, res) => {
   try {
-    const vendor = await Vendor.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    const { data: vendor, error } = await supabase
+      .from('vendors')
+      .update(req.body)
+      .eq('id', req.params.id)
+      .select()
+      .single();
     
-    if (!vendor) {
+    if (error || !vendor) {
       return res.status(404).json({ error: 'Vendor not found' });
     }
     
@@ -94,9 +107,14 @@ const updateVendor = async (req, res) => {
 
 const deleteVendor = async (req, res) => {
   try {
-    const vendor = await Vendor.findByIdAndDelete(req.params.id);
+    const { data: vendor, error } = await supabase
+      .from('vendors')
+      .delete()
+      .eq('id', req.params.id)
+      .select()
+      .single();
     
-    if (!vendor) {
+    if (error || !vendor) {
       return res.status(404).json({ error: 'Vendor not found' });
     }
     

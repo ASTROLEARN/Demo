@@ -1,10 +1,19 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const { createClient } = require('@supabase/supabase-js');
 const cors = require('cors');
 const morgan = require('morgan');
 require('dotenv').config();
 
 const errorHandler = require('./middleware/errorHandler');
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
+
+// Make supabase available globally for controllers
+global.supabase = supabase;
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -38,22 +47,22 @@ app.use((req, res, next) => {
   next();
 });
 
-// Connect to MongoDB
-const connectDB = async () => {
+// Test Supabase connection
+const testSupabaseConnection = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    const { data, error } = await supabase.from('users').select('count').limit(1);
+    if (error && error.code !== 'PGRST116') { // PGRST116 means table doesn't exist yet
+      console.error('Supabase connection error:', error.message);
+    } else {
+      console.log('Supabase connected successfully');
+    }
   } catch (error) {
-    console.error('Database connection error:', error.message);
-    process.exit(1);
+    console.log('Supabase connection test skipped - tables may not exist yet');
   }
 };
 
-// Connect to database
-connectDB();
+// Test database connection
+testSupabaseConnection();
 
 // Health check route
 app.get('/api/health', (req, res) => {
@@ -88,7 +97,7 @@ app.get('/', (req, res) => {
 });
 
 // 404 handler
-app.use('*', (req, res) => {
+app.use((req, res) => {
   res.status(404).json({
     success: false,
     error: 'Route not found'

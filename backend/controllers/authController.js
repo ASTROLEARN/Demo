@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const bcrypt = require('bcryptjs');
+const supabase = require('../config/supabase');
 
 const generateToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
@@ -7,20 +8,36 @@ const generateToken = (userId) => {
 
 const register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role = 'planner' } = req.body;
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const { data: existingUser } = await supabase
+      .from('users')
+      .select('id')
+      .eq('email', email)
+      .single();
+    
     if (existingUser) {
       return res.status(400).json({ error: 'User already exists with this email' });
     }
 
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     // Create user
-    const user = new User({ name, email, password, role });
-    await user.save();
+    const { data: user, error } = await supabase
+      .from('users')
+      .insert([{ name, email, password: hashedPassword, role }])
+      .select('id, name, email, role, created_at')
+      .single();
+
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
 
     // Generate token
-    const token = generateToken(user._id);
+    const token = generateToken(user.id);
 
     res.status(201).json({
       success: true,
@@ -43,25 +60,33 @@ const login = async (req, res) => {
       return res.status(400).json({ error: 'Please provide email and password' });
     }
 
-    // Find user and include password for comparison
-    const user = await User.findOne({ email }).select('+password');
-    if (!user) {
+    // Find user with password
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
+
+    if (error || !user) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     // Check password
-    const isMatch = await user.comparePassword(password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     // Generate token
-    const token = generateToken(user._id);
+    const token = generateToken(user.id);
+
+    // Remove password from response
+    const { password: _, ...userWithoutPassword } = user;
 
     res.json({
       success: true,
       data: {
-        user: user.toJSON(),
+        user: userWithoutPassword,
         token
       }
     });

@@ -1,4 +1,4 @@
-const Contact = require('../models/Contact');
+const supabase = require('../config/supabase');
 
 const createContact = async (req, res) => {
   try {
@@ -11,8 +11,15 @@ const createContact = async (req, res) => {
       });
     }
     
-    const contact = new Contact({ name, email, message });
-    await contact.save();
+    const { data: contact, error } = await supabase
+      .from('contact')
+      .insert([{ name, email, message }])
+      .select()
+      .single();
+    
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
     
     // Log the contact submission to console
     console.log('New contact form submission:', {
