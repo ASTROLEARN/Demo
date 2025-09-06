@@ -105,6 +105,29 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   }
 
+  // Assign random prices to vendor cards
+  (function assignRandomPrices(){
+    const fmt = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+    const cards = document.querySelectorAll('.vendor-card');
+    if(!cards || cards.length===0) return;
+    function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+    cards.forEach(card=>{
+      const priceTier = (card.dataset.price||'mid').toLowerCase();
+      let amount;
+      if(priceTier==='low') amount = rand(5000,30000);
+      else if(priceTier==='high') amount = rand(150000,800000);
+      else amount = rand(30000,150000);
+      // store value
+      card.dataset.priceAmount = amount;
+      // format and display in badges area
+      const badges = card.querySelector('.badges');
+      if(badges){
+        const priceEl = badges.querySelector('.tag');
+        if(priceEl) priceEl.textContent = fmt.format(amount);
+      }
+    });
+  })();
+
   // Dashboard prototype
   const budgetBar=document.querySelector('[data-budget-bar]');
   if(budgetBar){
