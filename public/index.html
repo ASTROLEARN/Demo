@@ -1,21 +1,125 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>AstroLearn App</title>
-    <style>
-      body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin: 0; padding: 40px; background: #f7f9fc; color: #0b1220; }
-      .app-container { max-width: 720px; margin: 0 auto; background: white; border-radius: 8px; padding: 32px; box-shadow: 0 4px 16px rgba(11,18,32,0.06); }
-      .title { font-size: 20px; margin: 0 0 8px; }
-      .subtitle { color: #475569; margin: 0 0 16px; }
-    </style>
-  </head>
-  <body>
-    <main class="app-container">
-      <h1 class="title">AstroLearn</h1>
-      <p class="subtitle">Minimal server is running — the app has been restored.</p>
-      <p>Open the preview to see the running application.</p>
-    </main>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eventify – Your Smart Event Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+<header class="header">
+  <div class="container navbar">
+    <a class="brand" href="./index.html" aria-label="Eventify Home">
+      <span class="brand-badge">E</span>
+      <span>Eventify</span>
+    </a>
+    <nav class="nav-links">
+      <a class="active" href="./index.html">Home</a>
+      <a href="./about.html">About</a>
+      <a href="./services.html">Services</a>
+      <a href="./how-it-works.html">How It Works</a>
+      <a href="./vendors.html">Vendors</a>
+      <a href="./dashboard.html">Dashboard</a>
+      <a href="./contact.html">Contact</a>
+      <a href="./blog.html">Blog</a>
+    </nav>
+    <button class="btn btn-outline" data-nav-toggle>Menu</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <h1>Eventify – Your Smart Event Planner</h1>
+        <p>Find vendors, manage budgets, and book everything you need for your perfect event in minutes.</p>
+        <div class="hero-cta">
+          <a class="btn" href="./how-it-works.html#start">Plan My Event</a>
+          <a class="btn btn-outline" href="./vendors.html">Browse Vendors</a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <img src="https://images.unsplash.com/photo-1529635054302-cd2e1ee30831?q=80&w=1600&auto=format&fit=crop" alt="Elegant wedding reception" loading="eager">
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Quick Vendor Categories</h2>
+      <p class="section-sub">Jump straight to what you need.</p>
+      <div class="categories">
+        <a class="category" href="./vendors.html?category=Catering" aria-label="Catering">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3h16"/><path d="M7 3v13"/><path d="M11 3v13"/><path d="M15 3v13"/><path d="M19 3v13"/></svg>
+          <span>Catering</span>
+        </a>
+        <a class="category" href="./vendors.html?category=Decoration" aria-label="Decoration">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/></svg>
+          <span>Decoration</span>
+        </a>
+        <a class="category" href="./vendors.html?category=Photography" aria-label="Photography">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="14" rx="3"/><circle cx="12" cy="14" r="4"/></svg>
+          <span>Photography</span>
+        </a>
+        <a class="category" href="./vendors.html?category=Venue" aria-label="Venue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+          <span>Venue</span>
+        </a>
+        <a class="category" href="./vendors.html?category=Entertainment" aria-label="Entertainment">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          <span>Entertainment</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section testimonials">
+    <div class="container">
+      <h2 class="section-title">Loved by event planners</h2>
+      <p class="section-sub">Real stories from happy customers.</p>
+      <div class="carousel" data-carousel>
+        <div class="carousel-track" data-track>
+          <article class="testimonial">
+            <p>“Eventify helped us plan our wedding in under two weeks. The vendor suggestions saved hours!”</p>
+            <span class="badge">Aisha & Rahul – Mumbai</span>
+          </article>
+          <article class="testimonial">
+            <p>“Our corporate offsite came together flawlessly. Budget tracking was a game changer.”</p>
+            <span class="badge">Karan – Bengaluru</span>
+          </article>
+          <article class="testimonial">
+            <p>“Loved the instant booking and calendar sync. Zero back-and-forth with vendors.”</p>
+            <span class="badge">Sana – Delhi</span>
+          </article>
+        </div>
+        <div class="carousel-nav">
+          <button class="carousel-btn" data-prev aria-label="Previous">‹</button>
+          <button class="carousel-btn" data-next aria-label="Next">›</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>© 2025 Eventify. All rights reserved.</div>
+    <nav class="nav-links">
+      <a href="./about.html">About</a>
+      <a href="./services.html">Services</a>
+      <a href="./contact.html">Contact</a>
+      <a href="./privacy.html">Privacy Policy</a>
+    </nav>
+    <div class="social">
+      <a href="#" aria-label="Twitter">🐦</a>
+      <a href="#" aria-label="Instagram">📷</a>
+      <a href="#" aria-label="LinkedIn">💼</a>
+    </div>
+  </div>
+</footer>
+<script src="./main.js" defer></script>
+</body>
 </html>
