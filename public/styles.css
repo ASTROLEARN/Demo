@@ -64,7 +64,7 @@ img{max-width:100%;display:block}
 /* Hero with layered gradient background */
 .hero{position:relative;overflow:hidden;padding:60px 0;background:linear-gradient(180deg, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.06) 100%)}
 .hero-inner{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center;padding:60px 0}
-.hero-copy h1{font-size:44px;line-height:1.04;margin:0 0 12px;font-family:'Dancing Script', cursive;font-weight:800;color:var(--text);}
+.hero-copy h1{font-size:44px;line-height:1.04;margin:0 0 12px;font-family:'Dancing Script', cursive;font-weight:800;color:var(--heading-color);}
 .hero-copy p{margin:0 0 18px;color:var(--muted);font-size:18px}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
 /* search bar */
